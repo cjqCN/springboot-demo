@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    druid:
+      initial-size: 5
+      max-active: 20
+      min-idle: 5
+      max-wait: 6000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      max-open-prepared-statements: 20 #和上面的等价
+      validation-query: SELECT 1 FROM user
+     # validation-query-timeout:
+      test-on-borrow: true
+      test-on-return: false
+      test-while-idle: true
+     # time-between-eviction-runs-millis:
+      min-evictable-idle-time-millis: 300000
+      max-evictable-idle-time-millis: 300000
+      filters: stat,wall,log4j     #配置多个英文逗号分隔
+
+  # WebStatFilter配置，说明请参考Druid Wiki，配置_配置WebStatFilter
+      web-stat-filter:
+        enabled: true #是否启用StatFilter默认值true
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+        session-stat-enable: true
+        session-stat-max-count: 1000
+     # principal-session-name: test
+     # principal-cookie-name: test
+        profile-enable: true
+
+  # StatViewServlet配置，说明请参考Druid Wiki，配置_StatViewServlet配置
+      stat-view-servlet:
+        enabled: true #是否启用StatViewServlet默认值true
+        url-pattern: /druid/*
+        sreset-enable: true
+        login-username: admin
+        login-password: admin
+        allow: 127.0.0.1
+        # stat-view-servlet.deny:
+

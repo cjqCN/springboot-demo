@@ -1,0 +1,9 @@
+spring:
+  output:
+    ansi:
+     enabled: detect
+
+logging:
+  file: debug.log
+  pattern:
+    console: "[%d{yyyy-MM-dd HH:mm:ss:SSS}][%p][%t][%C.%M\\(%F:%L\\)] - %m%n"

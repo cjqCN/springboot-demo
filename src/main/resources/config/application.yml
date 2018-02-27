@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    include: redis,druid,log,database
+  config:
+    location: classpath:config/*
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 输出mybatis日志
+  mapperLocations: classpath:mapper/*.xml
+  typeAliasesPackage: com.example.demo.bean
