@@ -1,18 +1,27 @@
-
-SET FOREIGN_KEY_CHECKS=0;
-
--- ----------------------------
--- Table structure for user
--- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `user_id` bigint(20) NOT NULL,
-  `user_name` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
-  `user_pwd` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
-  PRIMARY KEY (`user_id`)
+  `id` bigint(20) NOT NULL COMMENT '用户id',
+  `acount` varchar(20) NOT NULL DEFAULT '' COMMENT '账号',
+  `real_name` varchar(20) NOT NULL DEFAULT '' COMMENT '真实姓名',
+  `phone` varchar(20) NOT NULL COMMENT '手机号码',
+  `sex` tinyint(4) DEFAULT '0' COMMENT '性别  0未知  1男  2女',
+  `passwd` varchar(255) NOT NULL COMMENT '（密码+盐）MD5',
+  `salt` varchar(255) DEFAULT '' COMMENT '盐',
+  `type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '类型  1总平台用户   2租户管理员   3网站管理员  4网站用户',
+  `company_id` bigint(20) NOT NULL COMMENT '公司id',
+  `website_id` bigint(20) NOT NULL COMMENT '网站id',
+  `status` bit(1) NOT NULL DEFAULT b'1' COMMENT '状态   0禁用  1激活',
+  `remark` varchar(255) DEFAULT '' COMMENT '备注',
+  `is_deleted` int(2) NOT NULL DEFAULT '0' COMMENT '是否删除,0：未删除，1已删除',
+  `create_user_id` bigint(20) NOT NULL COMMENT '创建人 ID',
+  `create_user_name` varchar(32) NOT NULL COMMENT '创建人用户名',
+  `create_date` datetime NOT NULL COMMENT '创建时间',
+  `modify_user_id` bigint(20) DEFAULT NULL COMMENT '修改人 ID',
+  `modify_user_name` varchar(32) DEFAULT NULL COMMENT '修改人用户名',
+  `modify_date` datetime DEFAULT NULL COMMENT '修改时间',
+  `delete_user_id` bigint(20) DEFAULT NULL COMMENT '删除人 ID',
+  `delete_user_name` varchar(32) DEFAULT NULL COMMENT '删除人用户名',
+  `delete_date` datetime DEFAULT NULL COMMENT '删除时间',
+  `lock_version` bigint(20) DEFAULT '0' COMMENT '乐观锁标识字段，必须有值',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of user
--- ----------------------------
-INSERT INTO `user` VALUES ('1', 'jqChan', '123456');

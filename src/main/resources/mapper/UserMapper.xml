@@ -1,35 +1,354 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.example.demo.dao.UserDao">
-    <cache type="com.example.demo.util.RedisCache" />
-    <resultMap id="BaseResultMap" type="com.example.demo.bean.User">
-        <id column="user_id" property="userId" jdbcType="BIGINT"/>
-        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
-        <result column="user_pwd" property="userPwd" jdbcType="VARCHAR"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.bean.po.User">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="acount" jdbcType="VARCHAR" property="acount"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="sex" jdbcType="TINYINT" property="sex"/>
+        <result column="passwd" jdbcType="VARCHAR" property="passwd"/>
+        <result column="salt" jdbcType="VARCHAR" property="salt"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="company_id" jdbcType="BIGINT" property="companyId"/>
+        <result column="website_id" jdbcType="BIGINT" property="websiteId"/>
+        <result column="status" jdbcType="BIT" property="status"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="is_deleted" jdbcType="INTEGER" property="isDeleted"/>
+        <result column="create_user_id" jdbcType="BIGINT" property="createUserId"/>
+        <result column="create_user_name" jdbcType="VARCHAR" property="createUserName"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="modify_user_id" jdbcType="BIGINT" property="modifyUserId"/>
+        <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName"/>
+        <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate"/>
+        <result column="delete_user_id" jdbcType="BIGINT" property="deleteUserId"/>
+        <result column="delete_user_name" jdbcType="VARCHAR" property="deleteUserName"/>
+        <result column="delete_date" jdbcType="TIMESTAMP" property="deleteDate"/>
+        <result column="lock_version" jdbcType="BIGINT" property="lockVersion"/>
     </resultMap>
+    <sql id="Base_Column_List">
+        id, acount, real_name, phone, sex, passwd, salt, type, company_id, website_id, status,
+        remark, is_deleted, create_user_id, create_user_name, create_date, modify_user_id,
+        modify_user_name, modify_date, delete_user_id, delete_user_name, delete_date, lock_version
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where id = #{id,jdbcType=BIGINT} AND is_deleted != 1
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from user
-        where user_id = #{userId,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT} AND is_deleted != 1
     </delete>
-    <insert id="insert" parameterType="com.example.demo.bean.User">
-        insert into user (user_id, user_name, user_pwd
-        )
-        values (#{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}
-        )
+    <insert id="insert" parameterType="com.example.demo.bean.po.User">
+        insert into user (id, acount, real_name,
+        phone, sex, passwd,
+        salt, type, company_id,
+        website_id, status, remark,
+        is_deleted, create_user_id, create_user_name,
+        create_date, modify_user_id, modify_user_name,
+        modify_date, delete_user_id, delete_user_name,
+        delete_date, lock_version)
+        values (#{id,jdbcType=BIGINT}, #{acount,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR},
+        #{phone,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{passwd,jdbcType=VARCHAR},
+        #{salt,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{companyId,jdbcType=BIGINT},
+        #{websiteId,jdbcType=BIGINT}, #{status,jdbcType=BIT}, #{remark,jdbcType=VARCHAR},
+        #{isDeleted,jdbcType=INTEGER}, #{createUserId,jdbcType=BIGINT}, #{createUserName,jdbcType=VARCHAR},
+        #{createDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=BIGINT}, #{modifyUserName,jdbcType=VARCHAR},
+        #{modifyDate,jdbcType=TIMESTAMP}, #{deleteUserId,jdbcType=BIGINT}, #{deleteUserName,jdbcType=VARCHAR},
+        #{deleteDate,jdbcType=TIMESTAMP}, #{lockVersion,jdbcType=BIGINT})
     </insert>
-    <update id="updateByPrimaryKey" parameterType="com.example.demo.bean.User">
+    <insert id="insertSelective" parameterType="com.example.demo.bean.po.User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="acount != null">
+                acount,
+            </if>
+            <if test="realName != null">
+                real_name,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="passwd != null">
+                passwd,
+            </if>
+            <if test="salt != null">
+                salt,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="companyId != null">
+                company_id,
+            </if>
+            <if test="websiteId != null">
+                website_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="createUserId != null">
+                create_user_id,
+            </if>
+            <if test="createUserName != null">
+                create_user_name,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="modifyUserId != null">
+                modify_user_id,
+            </if>
+            <if test="modifyUserName != null">
+                modify_user_name,
+            </if>
+            <if test="modifyDate != null">
+                modify_date,
+            </if>
+            <if test="deleteUserId != null">
+                delete_user_id,
+            </if>
+            <if test="deleteUserName != null">
+                delete_user_name,
+            </if>
+            <if test="deleteDate != null">
+                delete_date,
+            </if>
+            <if test="lockVersion != null">
+                lock_version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="acount != null">
+                #{acount,jdbcType=VARCHAR},
+            </if>
+            <if test="realName != null">
+                #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="passwd != null">
+                #{passwd,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=TINYINT},
+            </if>
+            <if test="companyId != null">
+                #{companyId,jdbcType=BIGINT},
+            </if>
+            <if test="websiteId != null">
+                #{websiteId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=BIT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=INTEGER},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=BIGINT},
+            </if>
+            <if test="createUserName != null">
+                #{createUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyUserId != null">
+                #{modifyUserId,jdbcType=BIGINT},
+            </if>
+            <if test="modifyUserName != null">
+                #{modifyUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyDate != null">
+                #{modifyDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteUserId != null">
+                #{deleteUserId,jdbcType=BIGINT},
+            </if>
+            <if test="deleteUserName != null">
+                #{deleteUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteDate != null">
+                #{deleteDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lockVersion != null">
+                #{lockVersion,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.bean.po.User">
         update user
-        set user_name = #{userName,jdbcType=VARCHAR},
-        user_pwd = #{userPwd,jdbcType=VARCHAR}
-        where user_id = #{userId,jdbcType=BIGINT}
+        <set>
+            <if test="acount != null">
+                acount = #{acount,jdbcType=VARCHAR},
+            </if>
+            <if test="realName != null">
+                real_name = #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="passwd != null">
+                passwd = #{passwd,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                salt = #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=TINYINT},
+            </if>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=BIGINT},
+            </if>
+            <if test="websiteId != null">
+                website_id = #{websiteId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=BIT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=INTEGER},
+            </if>
+            <if test="createUserId != null">
+                create_user_id = #{createUserId,jdbcType=BIGINT},
+            </if>
+            <if test="createUserName != null">
+                create_user_name = #{createUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyUserId != null">
+                modify_user_id = #{modifyUserId,jdbcType=BIGINT},
+            </if>
+            <if test="modifyUserName != null">
+                modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyDate != null">
+                modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteUserId != null">
+                delete_user_id = #{deleteUserId,jdbcType=BIGINT},
+            </if>
+            <if test="deleteUserName != null">
+                delete_user_name = #{deleteUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteDate != null">
+                delete_date = #{deleteDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lockVersion != null">
+                lock_version = #{lockVersion,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT} AND is_deleted != 1
     </update>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select user_id, user_name, user_pwd
+    <update id="updateByPrimaryKey" parameterType="com.example.demo.bean.po.User">
+        update user
+        set acount = #{acount,jdbcType=VARCHAR},
+        real_name = #{realName,jdbcType=VARCHAR},
+        phone = #{phone,jdbcType=VARCHAR},
+        sex = #{sex,jdbcType=TINYINT},
+        passwd = #{passwd,jdbcType=VARCHAR},
+        salt = #{salt,jdbcType=VARCHAR},
+        type = #{type,jdbcType=TINYINT},
+        company_id = #{companyId,jdbcType=BIGINT},
+        website_id = #{websiteId,jdbcType=BIGINT},
+        status = #{status,jdbcType=BIT},
+        remark = #{remark,jdbcType=VARCHAR},
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+        create_user_id = #{createUserId,jdbcType=BIGINT},
+        create_user_name = #{createUserName,jdbcType=VARCHAR},
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+        modify_user_id = #{modifyUserId,jdbcType=BIGINT},
+        modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+        delete_user_id = #{deleteUserId,jdbcType=BIGINT},
+        delete_user_name = #{deleteUserName,jdbcType=VARCHAR},
+        delete_date = #{deleteDate,jdbcType=TIMESTAMP},
+        lock_version = #{lockVersion,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT} AND is_deleted != 1
+    </update>
+
+    <select id="findByConditions" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
         from user
-        where user_id = #{userId,jdbcType=BIGINT}
+        <where>
+            <if test="conditionsPo.conditions!=null">
+                <![CDATA[  ${conditionsPo.conditions} ]]>
+            </if>
+            <if test="1 == 1">
+                AND is_deleted != 1
+            </if>
+        </where>
+        <choose>
+            <when test="conditionsPo.sort!=null">
+                <![CDATA[  ${conditionsPo.sort} ]]>
+            </when>
+            <otherwise>
+                ORDER BY
+                create_date ASC
+            </otherwise>
+        </choose>
+        <if test="conditionsPo.limit!=null">
+            <![CDATA[  ${conditionsPo.limit} ]]>
+        </if>
     </select>
-    <select id="selectAll" resultMap="BaseResultMap">
-        select user_id, user_name, user_pwd
+
+    <select id="countByConditions" resultType="java.lang.Long">
+        select
+        count(1)
         from user
+        <where>
+            <if test="conditionsPo.conditions!=null">
+                <![CDATA[  ${conditionsPo.conditions} ]]>
+            </if>
+            <if test="1 == 1">
+                AND is_deleted != 1
+            </if>
+        </where>
     </select>
+
+    <delete id="pseudoDeleteByPrimaryKey">
+        update user
+        SET is_deleted = 1,
+        delete_user_id = #{deleteUserId,jdbcType=BIGINT},
+        delete_date = #{deleteDate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
 </mapper>

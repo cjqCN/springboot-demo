@@ -1,33 +1,23 @@
 package com.example.demo.service;
 
-import com.example.demo.bean.User;
+import com.example.demo.bean.dto.UserDTO;
 
-public interface UserService {
 
-    /**
-     * @param user
-     * @throws Exception
-     */
-    int addUser(User user) throws Exception;
+public interface UserService extends BaseService<UserDTO> {
 
     /**
-     * @param user
+     * 重置密码
+     *
      * @return
      * @throws Exception
      */
-    int updateUser(User user) throws Exception;
+    boolean resetPassWord() throws Exception;
 
     /**
-     * @param userId
+     * 修改密码
+     *
      * @return
      * @throws Exception
      */
-    User findUserByUserId(Long userId) throws Exception;
-
-    /**
-     * @param userId
-     * @throws Exception
-     */
-    int deleteUserByUserId(Long userId) throws Exception;
-
+    boolean changePassWord() throws Exception;
 }

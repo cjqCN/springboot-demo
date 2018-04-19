@@ -1,54 +1,32 @@
 package com.example.demo.web;
 
-import com.example.demo.bean.User;
+import com.example.demo.bean.dto.UserDTO;
 import com.example.demo.service.UserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+
+@Api(value = "UserController API", description = "用户管理 API")
 @RestController
-@RequestMapping("/user")
-@Slf4j
-public class UserController {
+@RequestMapping(value = "/api/user")
+@Log4j2
+public class UserController extends BaseController<UserService, UserDTO> {
 
-    private static final String SUCCESS = "SUCCESS";
-    private static final String FAILED = "FAILED";
 
-    @Autowired
-    UserService userService;
-
-    @ApiOperation(value = "获取用户", notes = "根据userId去获取用户", httpMethod = "GET")
-    @RequestMapping(value = "/user_find", method = RequestMethod.GET)
-    public User getUser(@RequestParam("user_id") Long userId) throws Exception {
-        log.info("<---{}", userId);
-        return userService.findUserByUserId(userId);
-    }
-
-    @ApiOperation(value = "删除用户", notes = "根据userId去删除用户")
-    @RequestMapping(value = "/user_delete", method = RequestMethod.GET)
-    public String deleteUser(@RequestParam("user_id") Long userId) throws Exception {
-        log.info("<---{}", userId);
-        int i = userService.deleteUserByUserId(userId);
-        return i > 0 ? SUCCESS : FAILED;
-    }
-
-    @ApiOperation(value = "添加用户", notes = "根据用户信息去添加用户")
-    @RequestMapping(value = "/user_add", method = RequestMethod.POST)
-    public String getUser(@RequestBody User user) throws Exception {
-        log.info("<---{}", user);
-        int i = userService.addUser(user);
-        return i > 0 ? SUCCESS : FAILED;
-    }
-
-    @ApiOperation(value = "更新用户", notes = "根据用户信息去更新用户")
-    @RequestMapping(value = "/user_update", method = RequestMethod.POST)
-    public String updateUser(@RequestBody User user) throws Exception {
-        log.info("<---{}", user);
-        int i = userService.updateUser(user);
-        return i > 0 ? SUCCESS : FAILED;
+    @ApiOperation(value = "查看用户", notes = "根据用户名查看用户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userName", value = "用户名", dataType = "String", defaultValue = "userName", paramType = "query", required = true)
+    })
+    @RequestMapping(value = "/viewByAcount", method = RequestMethod.GET)
+    public UserDTO viewByAcount(@RequestParam(required = true) String userName) throws Exception {
+        return null;
     }
 
 }
