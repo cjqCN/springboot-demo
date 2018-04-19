@@ -31,14 +31,14 @@ public abstract class AbstractService<V, P extends SuperEntity> implements BaseS
      *
      * @return
      */
-    abstract BaseMapper<P> mapper();
+    protected abstract BaseMapper<P> mapper();
 
     /**
      * 注入VO、PO转化器
      *
      * @return
      */
-    abstract IConverter<V, P> converter();
+    protected abstract IConverter<V, P> converter();
 
     @Override
     public boolean insert(V v) throws Exception {

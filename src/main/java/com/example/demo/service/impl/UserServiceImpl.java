@@ -1,34 +1,53 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.bean.converter.IConverter;
+import com.example.demo.bean.converter.UserConverter;
+import com.example.demo.bean.dto.UserDTO;
 import com.example.demo.bean.po.User;
-import com.example.demo.mapper.UserDao;
+import com.example.demo.mapper.BaseMapper;
+import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends AbstractService<UserDTO, User> implements UserService {
 
     @Autowired
-    UserDao userDao;
+    UserMapper userMapper;
+
+    @Autowired
+    UserConverter userConverter;
 
     @Override
-    public int addUser(User user) throws Exception {
-        return userDao.insert(user);
+    protected BaseMapper<User> mapper() {
+        return userMapper;
     }
 
     @Override
-    public int updateUser(User user) throws Exception {
-        return userDao.updateByPrimaryKey(user);
+    protected IConverter<UserDTO, User> converter() {
+        return userConverter;
     }
 
+    /**
+     * 重置密码
+     *
+     * @return
+     * @throws Exception
+     */
     @Override
-    public User findUserByUserId(Long userId) throws Exception {
-        return userDao.selectByPrimaryKey(userId);
+    public boolean resetPassWord() throws Exception {
+        return false;
     }
 
+    /**
+     * 修改密码
+     *
+     * @return
+     * @throws Exception
+     */
     @Override
-    public int deleteUserByUserId(Long userId) throws Exception {
-        return userDao.deleteByPrimaryKey(userId);
+    public boolean changePassWord() throws Exception {
+        return false;
     }
 }
