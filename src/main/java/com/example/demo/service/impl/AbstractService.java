@@ -3,7 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.bean.converter.IConverter;
 import com.example.demo.bean.po.SuperEntity;
 import com.example.demo.bean.po.User;
-import com.example.demo.dao.BaseMapper;
+import com.example.demo.mapper.BaseMapper;
 import com.example.demo.service.BaseService;
 import com.example.demo.util.commonquery.CommonRequestVo;
 import com.example.demo.util.commonquery.ConditionUtil;
