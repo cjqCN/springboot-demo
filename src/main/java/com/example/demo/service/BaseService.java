@@ -2,9 +2,10 @@ package com.example.demo.service;
 
 
 
-import com.example.demo.util.commonquery.CommonRequestVo;
 import com.example.demo.util.PagedResult;
 import com.example.demo.util.id.ID;
+import com.example.demo.util.query.ConditionQueryDTO;
+
 import java.util.List;
 
 /**
@@ -27,5 +28,5 @@ public interface BaseService<V> {
 
     V viewById(ID id) throws Exception;
 
-    PagedResult<V> selectByCommonRequestVo(CommonRequestVo commonRequestVo) throws Exception;
+    PagedResult<V> selectByConditionQuery(ConditionQueryDTO conditionQueryDTO) throws Exception;
 }

@@ -1,12 +1,11 @@
 package com.example.demo.mapper;
 
-import com.example.demo.util.commonquery.ConditionsPo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
 
-public interface BaseMapper<T> {
+public interface BaseMapper<T> extends ConditionQueryMapper<T> {
 
     /**
      * 根据ID删除
@@ -65,21 +64,7 @@ public interface BaseMapper<T> {
 
     int insertSelective(T record);
 
-    /**
-     * 根据查询条件查数量
-     *
-     * @param conditionsPo
-     * @return
-     */
-    long countByConditions(@Param("conditionsPo") ConditionsPo conditionsPo);
 
-    /**
-     * 根据查询条件查数据
-     *
-     * @param conditionsPo
-     * @return
-     */
-    List<T> findByConditions(@Param("conditionsPo") ConditionsPo conditionsPo);
 
 
 }

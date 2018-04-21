@@ -308,25 +308,22 @@
         <include refid="Base_Column_List"/>
         from user
         <where>
-            <if test="conditionsPo.conditions!=null">
-                <![CDATA[  ${conditionsPo.conditions} ]]>
+            <if test="conditionSQL.conditions!=null">
+                <![CDATA[  ${conditionSQL.conditions} ]]>
             </if>
             <if test="1 == 1">
                 AND is_deleted != 1
             </if>
         </where>
         <choose>
-            <when test="conditionsPo.sort!=null">
-                <![CDATA[  ${conditionsPo.sort} ]]>
+            <when test="conditionSQL.sort!=null">
+                <![CDATA[  ${conditionSQL.sort} ]]>
             </when>
             <otherwise>
                 ORDER BY
                 create_date ASC
             </otherwise>
         </choose>
-        <if test="conditionsPo.limit!=null">
-            <![CDATA[  ${conditionsPo.limit} ]]>
-        </if>
     </select>
 
     <select id="countByConditions" resultType="java.lang.Long">
@@ -334,8 +331,8 @@
         count(1)
         from user
         <where>
-            <if test="conditionsPo.conditions!=null">
-                <![CDATA[  ${conditionsPo.conditions} ]]>
+            <if test="conditionSQL.conditions!=null">
+                <![CDATA[  ${conditionSQL.conditions} ]]>
             </if>
             <if test="1 == 1">
                 AND is_deleted != 1

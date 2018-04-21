@@ -2,16 +2,13 @@ package com.example.demo.service.impl;
 
 import com.example.demo.bean.converter.IConverter;
 import com.example.demo.bean.po.SuperEntity;
-import com.example.demo.bean.po.User;
 import com.example.demo.mapper.BaseMapper;
 import com.example.demo.service.BaseService;
-import com.example.demo.util.commonquery.CommonRequestVo;
-import com.example.demo.util.commonquery.ConditionUtil;
-import com.example.demo.util.commonquery.ConditionsPo;
 import com.example.demo.util.PagedResult;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.example.demo.util.id.ID;
+import com.example.demo.util.query.ConditionQuery;
+import com.example.demo.util.query.ConditionQueryDTO;
+import com.example.demo.util.query.ConditionSQLHelper;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -22,7 +19,6 @@ import static com.example.demo.util.token.UserHolder.getCurrentUserId;
 import static com.example.demo.util.token.UserHolder.getCurrentUserName;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
-//TODO 需要修改细节，暂时是粗略地实现
 @Transactional(rollbackFor = Exception.class)
 public abstract class AbstractService<V, P extends SuperEntity> implements BaseService<V> {
 
@@ -31,14 +27,14 @@ public abstract class AbstractService<V, P extends SuperEntity> implements BaseS
      *
      * @return
      */
-    protected abstract BaseMapper<P> mapper();
+    abstract BaseMapper<P> mapper();
 
     /**
      * 注入VO、PO转化器
      *
      * @return
      */
-    protected abstract IConverter<V, P> converter();
+    abstract IConverter<V, P> converter();
 
     @Override
     public boolean insert(V v) throws Exception {
@@ -52,7 +48,7 @@ public abstract class AbstractService<V, P extends SuperEntity> implements BaseS
     public boolean insertBatch(List<V> vList) throws Exception {
         throwParamIsEmptyException(vList);
         List<P> pList = converter().transferByBatch(vList);
-        //TODO 改批量插入
+        //cjqtodo 改批量插入
         for (P p : pList) {
             p.setCreate(getCurrentUserName(), getCurrentUserId());
             mapper().insert(p);
@@ -72,7 +68,7 @@ public abstract class AbstractService<V, P extends SuperEntity> implements BaseS
     public boolean updatePatchById(List<V> vList) throws Exception {
         throwParamIsEmptyException(vList);
         List<P> pList = converter().transferByBatch(vList);
-        //TODO 改批量插入
+        //cjqtodo 改批量插入
         for (P p : pList) {
             p.setModify(getCurrentUserName(), getCurrentUserId());
             mapper().updateByPrimaryKeySelective(p);
@@ -102,21 +98,14 @@ public abstract class AbstractService<V, P extends SuperEntity> implements BaseS
         return converter().retransfer(p);
     }
 
+
     @Override
-    public PagedResult<V> selectByCommonRequestVo(CommonRequestVo commonRequestVo) throws Exception {
-        //TODO
-        throwParamIsEmptyException(commonRequestVo);
-        ConditionsPo conditionsPo = ConditionUtil.commonRequestVo2ConditionsPo(commonRequestVo, User.class);
-        PageHelper.startPage(2, 1);
-        List<P> pList = mapper().findByConditions(conditionsPo);
-        //取记录总条数
-        long total = new PageInfo<>(pList).getTotal();
-
-        if (!isEmpty(pList)) {
-            return new PagedResult<V>(converter().retransferByBatch(pList), total);
-        }
-        return null;
-
+    public PagedResult<V> selectByConditionQuery(ConditionQueryDTO conditionQueryDTO) throws Exception {
+        //cjqtodo 代码示范，应子类实现，推荐使用AliasMapperConditionSQLHelper
+        PagedResult<P> pagedResult = ConditionQuery.SIMPLE_CONDITION_QUERY.conditionQuery(mapper(),
+                conditionQueryDTO, new ConditionSQLHelper());
+        return new PagedResult<V>(converter().retransferByBatch(pagedResult.getItems()),
+                pagedResult.getTotalCount());
     }
 
     final static Exception PARAM_IS_EMPTY_EXCEPTION = new Exception("参数为空");

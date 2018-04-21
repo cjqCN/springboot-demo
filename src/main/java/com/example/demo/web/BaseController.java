@@ -3,8 +3,8 @@ package com.example.demo.web;
 
 import com.example.demo.service.BaseService;
 import com.example.demo.util.PagedResult;
-import com.example.demo.util.commonquery.CommonRequestVo;
 import com.example.demo.util.id.ID;
+import com.example.demo.util.query.ConditionQueryDTO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -106,13 +106,14 @@ public abstract class BaseController<TService extends BaseService, V> {
     /**
      * 根据条件查询
      *
-     * @param commonRequestVo
+     * @param conditionQueryDTO
      * @return
      */
     @ApiOperation(value = "搜索", notes = "根据条件搜索")
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public PagedResult<V> selectByCommonRequestVo(@RequestBody CommonRequestVo commonRequestVo) throws Exception {
-        return service.selectByCommonRequestVo(commonRequestVo);
+    public PagedResult<V> selectByCommonRequestVo(@RequestBody ConditionQueryDTO conditionQueryDTO) throws Exception {
+        return service.selectByConditionQuery(conditionQueryDTO);
     }
+
 
 }
