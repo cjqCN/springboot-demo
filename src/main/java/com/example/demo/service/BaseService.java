@@ -20,8 +20,6 @@ public interface BaseService<V> {
 
     boolean updateById(V v) throws Exception;
 
-    boolean updatePatchById(List<V> vList) throws Exception;
-
     boolean deleteById(ID id) throws Exception;
 
     boolean deleteBatchById(List<ID> idList) throws Exception;

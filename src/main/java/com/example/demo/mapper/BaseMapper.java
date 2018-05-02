@@ -13,6 +13,7 @@ public interface BaseMapper<T> extends ConditionQueryMapper<T> {
      * @param id
      * @return
      */
+    @Deprecated
     int deleteByPrimaryKey(Long id);
 
 
@@ -25,7 +26,19 @@ public interface BaseMapper<T> extends ConditionQueryMapper<T> {
      * @return
      */
     int pseudoDeleteByPrimaryKey(@Param("id") Long id, @Param("deleteUserId") Long deleteUserId,
-                                 @Param("deleteDate") Date deleteDate);
+                                 @Param("deleteUserName") String deleteUserName, @Param("deleteDate") Long deleteDate);
+
+
+    /**
+     * 软删除
+     *
+     * @param ids          主键
+     * @param deleteUserId 删除人id
+     * @param deleteDate   删除时间
+     * @return
+     */
+    int pseudoDeleteBatchByPrimaryKey(@Param("ids") List<Long> ids, @Param("deleteUserId") Long deleteUserId,
+                                      @Param("deleteUserName") String deleteUserName, @Param("deleteDate") Long deleteDate);
 
     /**
      * 新增
@@ -34,6 +47,22 @@ public interface BaseMapper<T> extends ConditionQueryMapper<T> {
      * @return
      */
     int insert(T record);
+
+    /**
+     * 批量新增
+     *
+     * @param records
+     * @return
+     */
+    int insertBatch(List<T> records);
+
+    /**
+     * 新增
+     * @param record
+     * @return
+     */
+    int insertSelective(T record);
+
 
     /**
      * 根据ID搜索
@@ -56,15 +85,15 @@ public interface BaseMapper<T> extends ConditionQueryMapper<T> {
      * @param record
      * @return
      */
+    @Deprecated
     int updateByPrimaryKey(T record);
 
-
+    /**
+     * 根据ID更新，忽略空字段
+     *
+     * @param record
+     * @return
+     */
     int updateByPrimaryKeySelective(T record);
-
-
-    int insertSelective(T record);
-
-
-
 
 }

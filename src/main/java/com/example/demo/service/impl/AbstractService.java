@@ -12,6 +12,7 @@ import com.example.demo.util.query.ConditionSQLHelper;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 import static com.example.demo.util.TimeUtil.date;
@@ -19,7 +20,7 @@ import static com.example.demo.util.token.UserHolder.getCurrentUserId;
 import static com.example.demo.util.token.UserHolder.getCurrentUserName;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
-@Transactional(rollbackFor = Exception.class)
+@Transactional
 public abstract class AbstractService<V, P extends SuperEntity> implements BaseService<V> {
 
     /**
@@ -48,12 +49,8 @@ public abstract class AbstractService<V, P extends SuperEntity> implements BaseS
     public boolean insertBatch(List<V> vList) throws Exception {
         throwParamIsEmptyException(vList);
         List<P> pList = converter().transferByBatch(vList);
-        //cjqtodo 改批量插入
-        for (P p : pList) {
-            p.setCreate(getCurrentUserName(), getCurrentUserId());
-            mapper().insert(p);
-        }
-        return true;
+        pList.forEach(p -> p.setCreate(getCurrentUserName(), getCurrentUserId()));
+        return mapper().insertBatch(pList) > 0;
     }
 
     @Override
@@ -64,33 +61,21 @@ public abstract class AbstractService<V, P extends SuperEntity> implements BaseS
         return mapper().updateByPrimaryKeySelective(p) > 0;
     }
 
-    @Override
-    public boolean updatePatchById(List<V> vList) throws Exception {
-        throwParamIsEmptyException(vList);
-        List<P> pList = converter().transferByBatch(vList);
-        //cjqtodo 改批量插入
-        for (P p : pList) {
-            p.setModify(getCurrentUserName(), getCurrentUserId());
-            mapper().updateByPrimaryKeySelective(p);
-        }
-        return true;
-    }
 
     @Override
     public boolean deleteById(ID id) throws Exception {
         throwParamIsEmptyException(id);
-        return mapper().pseudoDeleteByPrimaryKey(id.idForLong(), getCurrentUserId(), date()) > 0;
+        return mapper().pseudoDeleteByPrimaryKey(id.idForLong(), getCurrentUserId(), getCurrentUserName(), date().getTime()) > 0;
     }
 
     @Override
     public boolean deleteBatchById(List<ID> idList) throws Exception {
         throwParamIsEmptyException(idList);
-        for (ID id : idList) {
-            mapper().pseudoDeleteByPrimaryKey(id.idForLong(), getCurrentUserId(), date());
-        }
-        return true;
+        return mapper().pseudoDeleteBatchByPrimaryKey(idList.stream().map(x -> x.idForLong()).collect(Collectors.toList()),
+                getCurrentUserId(), getCurrentUserName(), date().getTime()) > 0;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public V viewById(ID id) throws Exception {
         throwParamIsEmptyException(id);
@@ -98,7 +83,7 @@ public abstract class AbstractService<V, P extends SuperEntity> implements BaseS
         return converter().retransfer(p);
     }
 
-
+    @Transactional(readOnly = true)
     @Override
     public PagedResult<V> selectByConditionQuery(ConditionQueryDTO conditionQueryDTO) throws Exception {
         //cjqtodo 代码示范，应子类实现，推荐使用AliasMapperConditionSQLHelper

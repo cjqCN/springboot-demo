@@ -15,13 +15,13 @@ CREATE TABLE `user` (
   `is_deleted` int(2) NOT NULL DEFAULT '0' COMMENT '是否删除,0：未删除，1已删除',
   `create_user_id` bigint(20) NOT NULL COMMENT '创建人 ID',
   `create_user_name` varchar(32) NOT NULL COMMENT '创建人用户名',
-  `create_date` datetime NOT NULL COMMENT '创建时间',
+  `create_date` bigint(20) NOT NULL COMMENT '创建时间',
   `modify_user_id` bigint(20) DEFAULT NULL COMMENT '修改人 ID',
   `modify_user_name` varchar(32) DEFAULT NULL COMMENT '修改人用户名',
-  `modify_date` datetime DEFAULT NULL COMMENT '修改时间',
+  `modify_date` bigint(20) DEFAULT NULL COMMENT '修改时间',
   `delete_user_id` bigint(20) DEFAULT NULL COMMENT '删除人 ID',
   `delete_user_name` varchar(32) DEFAULT NULL COMMENT '删除人用户名',
-  `delete_date` datetime DEFAULT NULL COMMENT '删除时间',
+  `delete_date` bigint(20) DEFAULT NULL COMMENT '删除时间',
   `lock_version` bigint(20) DEFAULT '0' COMMENT '乐观锁标识字段，必须有值',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
