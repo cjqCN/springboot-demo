@@ -7,12 +7,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 
-
 /**
- * 为处理高并发场景下System.currentTimeMillis()的性能问题的优化<p></>
- * 每次调用new Date() 或者 System.currentTimeMillis()都会调用底层系统接口，导致速度慢
- * 本工具开一个线程与系统交互，后台定时更新时间，优化性能。
- *
  * @author chenjinquan
  * @date 2018-4-12
  */
