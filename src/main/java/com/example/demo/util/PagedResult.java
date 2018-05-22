@@ -21,7 +21,13 @@ public class PagedResult<T> {
      */
     long totalCount;
 
-    public PagedResult() {}
+    /**
+     * 当前页数
+     */
+    long pageIndex;
+
+    public PagedResult() {
+    }
 
     public PagedResult(List<T> items) {
         this();
@@ -31,6 +37,12 @@ public class PagedResult<T> {
     public PagedResult(List<T> items, long totalCount) {
         this(items);
         this.totalCount = totalCount;
+    }
+
+    public PagedResult(List<T> items, long totalCount, long pageIndex) {
+        this(items);
+        this.totalCount = totalCount;
+        this.pageIndex = pageIndex;
     }
 
 }

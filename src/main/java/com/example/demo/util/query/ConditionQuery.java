@@ -1,10 +1,9 @@
 package com.example.demo.util.query;
 
 
-import com.example.demo.mapper.ConditionQueryMapper;
+import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
+import com.example.demo.mapper.SuperMapper;
 import com.example.demo.util.PagedResult;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
  * @author chenjinquan
  */
 public interface ConditionQuery {
-    <T> PagedResult<T> conditionQuery(ConditionQueryMapper<T> conditionQueryMapper,
+    <T> PagedResult<T> conditionQuery(SuperMapper<T> conditionQueryMapper,
                                       ConditionQueryDTO conditionQueryDTO, ConditionSQLHelper conditionSQLHelper) throws Exception;
 
     ConditionQuery SIMPLE_CONDITION_QUERY = new ConditionQuery() {
@@ -23,7 +22,7 @@ public interface ConditionQuery {
         final static int PAGE_SIZE = 10;
 
         @Override
-        public <T> PagedResult<T> conditionQuery(ConditionQueryMapper<T> conditionQueryMapper,
+        public <T> PagedResult<T> conditionQuery(SuperMapper<T> conditionQueryMapper,
                                                  ConditionQueryDTO conditionQueryDTO, ConditionSQLHelper conditionSQLHelper) throws Exception {
             if (conditionQueryDTO == null) {
                 throw new Exception("条件为空");
@@ -40,8 +39,8 @@ public interface ConditionQuery {
             }
             PageHelper.startPage(conditionQueryDTO.getPageIndex(), conditionQueryDTO.getPageSize());
             List<T> tList = conditionQueryMapper.findByConditions(conditionSQL);
-            long total = new PageInfo<>(tList).getTotal();
-            return new PagedResult<T>(tList, total);
+            long total = PageHelper.freeTotal();
+            return new PagedResult<T>(tList, total, conditionQueryDTO.getPageIndex());
         }
     };
 }

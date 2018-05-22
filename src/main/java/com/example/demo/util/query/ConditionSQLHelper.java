@@ -12,6 +12,8 @@ import static org.springframework.util.StringUtils.isEmpty;
 
 public class ConditionSQLHelper {
 
+    public static final ConditionSQLHelper instance = new ConditionSQLHelper();
+
     final static String INVALID_ARGUMENT = "非法参数";
     final static String BLANK = " ";
     final static String ORDER_BY = BLANK + "ORDER BY" + BLANK;

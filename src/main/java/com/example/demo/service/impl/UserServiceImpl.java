@@ -4,7 +4,6 @@ import com.example.demo.bean.converter.IConverter;
 import com.example.demo.bean.converter.UserConverter;
 import com.example.demo.bean.dto.UserDTO;
 import com.example.demo.bean.po.User;
-import com.example.demo.mapper.BaseMapper;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
 import com.example.demo.util.PagedResult;
