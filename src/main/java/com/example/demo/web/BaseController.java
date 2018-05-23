@@ -1,6 +1,5 @@
 package com.example.demo.web;
 
-
 import com.example.demo.service.BaseService;
 import com.example.demo.util.PagedResult;
 import com.example.demo.util.id.ID;
@@ -72,7 +71,7 @@ public abstract class BaseController<TService extends BaseService, V> {
      */
     @ApiOperation(value = "删除", notes = "删除")
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public boolean delete(@RequestParam(required = true) String id) throws Exception {
+    public boolean delete(@RequestParam String id) throws Exception {
         return service.deleteById(ID.newID(id));
     }
 
@@ -97,9 +96,9 @@ public abstract class BaseController<TService extends BaseService, V> {
      * @throws Exception
      */
     @ApiOperation(value = "查看", notes = "查看")
-    @RequestMapping(value = "/viewById", method = RequestMethod.GET)
-    public V viewById(@RequestParam(required = true) String id) throws Exception {
-        return (V) service.viewById(ID.newID(id));
+    @RequestMapping(value = "/findById", method = RequestMethod.GET)
+    public V viewById(@RequestParam String id) throws Exception {
+        return (V) service.findById(ID.newID(id));
     }
 
 
@@ -112,8 +111,7 @@ public abstract class BaseController<TService extends BaseService, V> {
     @ApiOperation(value = "搜索", notes = "根据条件搜索")
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public PagedResult<V> selectByCommonRequestVo(@RequestBody ConditionQueryDTO conditionQueryDTO) throws Exception {
-        return service.selectByConditionQuery(conditionQueryDTO);
+        return service.findByConditionQuery(conditionQueryDTO);
     }
-
 
 }

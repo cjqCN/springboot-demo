@@ -1,17 +1,21 @@
 package com.example.demo.service.impl;
 
+import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.example.demo.bean.converter.IConverter;
 import com.example.demo.bean.converter.UserConverter;
 import com.example.demo.bean.dto.UserDTO;
 import com.example.demo.bean.po.User;
+import com.example.demo.mapper.SuperMapper;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
 import com.example.demo.util.PagedResult;
 import com.example.demo.util.query.AliasMapperConditionSQLHelper;
 import com.example.demo.util.query.ConditionQuery;
 import com.example.demo.util.query.ConditionQueryDTO;
+import com.example.demo.util.query.ConditionSQLHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +30,7 @@ public class UserServiceImpl extends AbstractService<UserDTO, User> implements U
     UserConverter userConverter;
 
     @Override
-    protected BaseMapper<User> mapper() {
+    protected SuperMapper<User> mapper() {
         return userMapper;
     }
 
@@ -36,8 +40,9 @@ public class UserServiceImpl extends AbstractService<UserDTO, User> implements U
     }
 
 
+    @Transactional(readOnly = true)
     @Override
-    public PagedResult<UserDTO> selectByConditionQuery(ConditionQueryDTO conditionQueryDTO) throws Exception {
+    public PagedResult<UserDTO> findByConditionQuery(ConditionQueryDTO conditionQueryDTO) throws Exception {
         Map<String, String> conditionNameMap = new HashMap<>();
         conditionNameMap.put("u", "id");
         PagedResult<User> pagedResult = ConditionQuery.SIMPLE_CONDITION_QUERY.conditionQuery(mapper(), conditionQueryDTO, new AliasMapperConditionSQLHelper(conditionNameMap));
