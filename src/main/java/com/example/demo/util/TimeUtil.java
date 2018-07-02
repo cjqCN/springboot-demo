@@ -36,14 +36,16 @@ public class TimeUtil {
     }
 
     public static String getDateStr(Date date, String fullFormat) {
-        if (date == null) return null;
+        if (date == null)
+            return null;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(fullFormat);
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone(CN_TIME_ZONE));
         return simpleDateFormat.format(date);
     }
 
     public static String getYMDDateStr(Date date) {
-        if (date == null) return null;
+        if (date == null)
+            return null;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(YYYY_MM_DD);
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone(CN_TIME_ZONE));
         return simpleDateFormat.format(date);
@@ -64,21 +66,23 @@ public class TimeUtil {
         Date date = new Date(SystemClock.now());
         return date;
     }
+
     public static Long curTime() {
         return System.currentTimeMillis();
     }
 
-    public static long dateForLong() {
-        return SystemClock.now();
-    }
+    //public static long dateForLong() {
+    //	return SystemClock.now();
+    //}
 
 }
 
 class SystemClock {
-    static Instant now = Instant.now();
+
     public static long now() {
-        return now.toEpochMilli();
+        return Instant.now().toEpochMilli();
     }
+
 }
 
 
